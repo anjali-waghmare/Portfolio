@@ -23,8 +23,16 @@ const education = [
 ];
 
 const training = [
-  { course: "Certified Course in Full Stack Development", institute: "Apna College" },
-  { course: "Certified Course in React.js", institute: "RSE Business IT Solutions" },
+  {
+    course: "Certified Course in Full Stack Development",
+    institute: "Apna College",
+    fileUrl: "/certificates/Apna-College.png",
+  },
+  {
+    course: "Certified Course in React.js",
+    institute: "RSE Business IT Solutions",
+    fileUrl: "/certificates/RSE-IT-Solution.png",
+  },
 ];
 
 const aiTools = ["ChatGPT", "Gemini", "Blackbox AI"];
@@ -61,6 +69,14 @@ function About() {
                 </a>
                 <a href="tel:+917057024755" className="about__profile-link">
                   📞 +91-7057024755
+                </a>
+                <a
+                  href="https://www.linkedin.com/in/anjali-waghmare"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="about__profile-link"
+                >
+                  💼 LinkedIn
                 </a>
               </div>
             </div>
@@ -133,13 +149,23 @@ function About() {
           </div>
           <div className="about__training-list">
             {training.map((t) => (
-              <div key={t.course} className="about__training-card">
+              <a
+                key={t.course}
+                href={t.fileUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="about__training-card"
+                title="Click to view certificate"
+              >
                 <span className="about__training-icon">🎓</span>
-                <div>
+                <div className="about__training-text">
                   <p className="about__training-course">{t.course}</p>
                   <span className="about__training-inst">{t.institute}</span>
                 </div>
-              </div>
+                <span className="about__training-link-badge">
+                  View Certificate <span>↗</span>
+                </span>
+              </a>
             ))}
           </div>
         </div>

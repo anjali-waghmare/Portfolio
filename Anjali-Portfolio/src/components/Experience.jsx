@@ -1,4 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import apnaCollegeCert from "../assets/Apna College.png";
+import rseCert from "../assets/RSE IT Solution.png";
 import "./Experience.css";
 
 const timeline = [
@@ -65,6 +67,8 @@ const certifications = [
     year: "2026",
     icon: "\uD83C\uDFC5",
     color: "#f0b429",
+    image: apnaCollegeCert,
+    fileUrl: "/certificates/Apna-College.png",
   },
   {
     title: "React.js Developer",
@@ -72,6 +76,8 @@ const certifications = [
     year: "2024",
     icon: "\uD83C\uDFC5",
     color: "#38bdf8",
+    image: rseCert,
+    fileUrl: "/certificates/RSE-IT-Solution.png",
   },
 ];
 
@@ -89,6 +95,21 @@ const TYPE_COLOR = {
 
 function Experience() {
   const [activeTab, setActiveTab] = useState("work");
+  const [selectedCert, setSelectedCert] = useState(null);
+
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === "Escape") setSelectedCert(null);
+    };
+    if (selectedCert) {
+      window.addEventListener("keydown", handleKeyDown);
+      document.body.style.overflow = "hidden";
+    }
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+      document.body.style.overflow = "unset";
+    };
+  }, [selectedCert]);
 
   return (
     <section id="experience" className="exp">
@@ -191,14 +212,113 @@ function Experience() {
               {certifications.map((cert, i) => (
                 <div key={i} className="exp__cert-card">
                   <div className="exp__cert-glow" style={{ "--cert-color": cert.color }} />
-                  <div className="exp__cert-icon" style={{ "--cert-color": cert.color }}>
-                    {cert.icon}
+
+                  {/* Thumbnail */}
+                  <div
+                    className="exp__cert-thumb-wrap"
+                    onClick={() => setSelectedCert(cert)}
+                    role="button"
+                    tabIndex={0}
+                    aria-label={`Preview ${cert.title} certificate`}
+                    onKeyDown={(e) => e.key === "Enter" && setSelectedCert(cert)}
+                  >
+                    <img
+                      src={cert.image}
+                      alt={`${cert.title} Certificate`}
+                      className="exp__cert-thumb"
+                      loading="lazy"
+                    />
+                    <div className="exp__cert-thumb-overlay">
+                      <span className="exp__cert-thumb-zoom">🔍 Click to Preview</span>
+                    </div>
                   </div>
-                  <h3 className="exp__cert-title">{cert.title}</h3>
-                  <p className="exp__cert-issuer">{cert.issuer}</p>
-                  <span className="exp__cert-year">{cert.year}</span>
+
+                  {/* Details */}
+                  <div className="exp__cert-info">
+                    <div className="exp__cert-meta">
+                      <span className="exp__cert-year">{cert.year}</span>
+                      <span className="exp__cert-issuer-badge" style={{ "--cert-color": cert.color }}>
+                        {cert.issuer}
+                      </span>
+                    </div>
+                    <h3 className="exp__cert-title">{cert.title}</h3>
+                  </div>
+
+                  {/* Actions */}
+                  <div className="exp__cert-actions">
+                    <button
+                      type="button"
+                      className="exp__cert-btn exp__cert-btn--preview"
+                      onClick={() => setSelectedCert(cert)}
+                      style={{ "--cert-color": cert.color }}
+                    >
+                      Preview Certificate <span>👁️</span>
+                    </button>
+                    <a
+                      href={cert.fileUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="exp__cert-btn exp__cert-btn--full"
+                      aria-label="Open certificate in new tab"
+                    >
+                      Full Size <span>↗</span>
+                    </a>
+                  </div>
                 </div>
               ))}
+            </div>
+          </div>
+        )}
+
+        {/* Certificate Modal */}
+        {selectedCert && (
+          <div
+            className="exp__modal-backdrop"
+            onClick={() => setSelectedCert(null)}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="cert-modal-title"
+          >
+            <div
+              className="exp__modal-content"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="exp__modal-header">
+                <div>
+                  <h3 id="cert-modal-title" className="exp__modal-title">
+                    {selectedCert.title}
+                  </h3>
+                  <p className="exp__modal-subtitle">
+                    {selectedCert.issuer} · {selectedCert.year}
+                  </p>
+                </div>
+                <div className="exp__modal-actions">
+                  <a
+                    href={selectedCert.fileUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="exp__modal-action-btn"
+                    download
+                  >
+                    Download ⬇
+                  </a>
+                  <button
+                    type="button"
+                    className="exp__modal-close"
+                    onClick={() => setSelectedCert(null)}
+                    aria-label="Close certificate preview"
+                  >
+                    ✕
+                  </button>
+                </div>
+              </div>
+              <div className="exp__modal-img-wrap">
+                <img
+                  src={selectedCert.image}
+                  alt={selectedCert.title}
+                  className="exp__modal-img"
+                />
+              </div>
             </div>
           </div>
         )}

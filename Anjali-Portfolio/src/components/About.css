@@ -331,14 +331,18 @@
   border: 1px solid rgba(255,255,255,0.08);
   border-radius: 14px;
   padding: 1.1rem 1.4rem;
-  transition: border-color 0.3s ease, transform 0.3s ease;
+  text-decoration: none;
+  transition: border-color 0.3s ease, transform 0.3s ease, background 0.3s ease;
 }
 .about__training-card:hover {
-  border-color: rgba(255,255,255,0.18);
+  border-color: rgba(255,255,255,0.22);
+  background: rgba(255,255,255,0.05);
   transform: translateX(6px);
 }
 
 .about__training-icon { font-size: 1.4rem; flex-shrink: 0; }
+
+.about__training-text { flex: 1; }
 
 .about__training-course {
   font-size: 0.93rem;
@@ -350,6 +354,27 @@
 .about__training-inst {
   font-size: 0.8rem;
   color: rgba(140,140,140,0.8);
+}
+
+.about__training-link-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #f0b429;
+  background: rgba(240, 180, 41, 0.1);
+  border: 1px solid rgba(240, 180, 41, 0.25);
+  padding: 0.3rem 0.75rem;
+  border-radius: 50px;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+}
+
+.about__training-card:hover .about__training-link-badge {
+  background: rgba(240, 180, 41, 0.2);
+  border-color: rgba(240, 180, 41, 0.45);
+  color: #ffe08a;
 }
 
 /* ── Responsive ── */
